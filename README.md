@@ -2,7 +2,6 @@
 
 ### R&R
 
-
 | 분야 | 이름 | 포지션 |
 | 개발 | [정태우](https://github.com/taewoojeong) | 📱 iOS 화면 UI 구현, 서버 연동 |
 | 개발 | [유우식](https://github.com/YWSIK) | 💻 DB 및 API 구축, 서버 배포 |
