@@ -26,7 +26,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 //클라이언트에서 웹소켓 서버에 요청시 모든 요청을 수용
                 .setAllowedOrigins("*")
                 //핸드셰이크 요청을 인터셉트할 인터셉터
-                .addInterceptors(new HttpSessionHandshakeInterceptor());
+                .addInterceptors(new HttpSessionHandshakeInterceptor())
+                //브라우저에서 websocket지원하지 않는 경우를 대비해 어플리케이션 코드 변경 없이 런타임이 필요할 때 대체
+                .withSockJS();
     }
 
     @Bean
@@ -37,4 +39,5 @@ public class WebSocketConfig implements WebSocketConfigurer {
         container.setMaxBinaryMessageBufferSize(8192);
         return container;
     }
+
 }

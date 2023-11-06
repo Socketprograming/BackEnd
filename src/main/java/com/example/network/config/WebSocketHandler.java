@@ -15,6 +15,7 @@ import java.util.Set;
 public class WebSocketHandler extends TextWebSocketHandler {
     private static Set<WebSocketSession> CLIENTS = Collections.synchronizedSet(new HashSet<>());
 
+    //client 접속 시 호출
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println(session.toString());
@@ -27,6 +28,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    //client 접속 해제 시 호출
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         CLIENTS.remove(session);
