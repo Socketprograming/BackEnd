@@ -8,7 +8,7 @@ public class TestApp {
 
         try {
             // open websocket
-            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000/tryitout/H0STCNT0"));
+            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:31000/tryitout/H0STCNT0"));
 
             // add listener
             clientEndPoint.addMessageHandler(new WebSocketClientEndpoint.MessageHandler() {

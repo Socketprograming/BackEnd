@@ -34,7 +34,7 @@ public class WebSocketClientEndpoint {
         String requestMessage = "{\n" +
                 "         \"header\":\n" +
                 "         {\n" +
-                "                  \"approval_key\": \"46ccac02-2f9a-4c2a-81df-24e19d0c0407\",\n" +
+                "                  \"approval_key\": \"*****\",\n" +
                 "                  \"custtype\":\"P\",\n" +
                 "                  \"tr_type\":\"1\",\n" +
                 "                  \"content-type\":\"utf-8\"\n" +
