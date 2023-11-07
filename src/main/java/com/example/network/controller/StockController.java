@@ -23,5 +23,4 @@ public class StockController {
 //        this.stockService = stockService;
 //    }
 
-
 }

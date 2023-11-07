@@ -1,7 +1,6 @@
 package com.example.network.config;
 
 import jakarta.websocket.*;
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,7 +31,25 @@ public class WebSocketClientEndpoint {
     @OnOpen
     public void onOpen(Session userSession) {
         System.out.println("opening websocket");
+        String requestMessage = "{\n" +
+                "         \"header\":\n" +
+                "         {\n" +
+                "                  \"approval_key\": \"46ccac02-2f9a-4c2a-81df-24e19d0c0407\",\n" +
+                "                  \"custtype\":\"P\",\n" +
+                "                  \"tr_type\":\"1\",\n" +
+                "                  \"content-type\":\"utf-8\"\n" +
+                "         },\n" +
+                "         \"body\":\n" +
+                "         {\n" +
+                "                  \"input\":\n" +
+                "                  {\n" +
+                "                           \"tr_id\":\"H0STCNT0\",\n" +
+                "                           \"tr_key\":\"005930\"\n" +
+                "                  }\n" +
+                "         }\n" +
+                "}";
         this.userSession = userSession;
+        sendMessage(requestMessage);
     }
 
     /**
@@ -79,7 +96,7 @@ public class WebSocketClientEndpoint {
      * @param message
      */
     public void sendMessage(String message) {
-        this.userSession.getAsyncRemote().sendText(message);
+        this.userSession.getAsyncRemote().sendText(message);    //입력된 메시지 서버로 전송
     }
 
     /**

@@ -1,21 +1,14 @@
 package com.example.network.config;
 
-import jakarta.websocket.Session;
-import org.apache.tomcat.util.json.JSONParser;
-
-import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-//import javax.json.Json;
 
 public class TestApp {
     public static void main(String[] args) {
 
         try {
             // open websocket
-            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000"));
+            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000/tryitout/H0STCNT0"));
 
             // add listener
             clientEndPoint.addMessageHandler(new WebSocketClientEndpoint.MessageHandler() {
@@ -36,6 +29,5 @@ public class TestApp {
             System.err.println("URISyntaxException exception: " + ex.getMessage());
         }
     }
-
 
 }
