@@ -31,30 +31,25 @@ public class WebSocketClientEndpoint {
      * @param userSession the userSession which is opened.
      */
     @OnOpen
-    public void onOpen(Session userSession, @PathParam("trKey") String trKey) {
+    public void onOpen(Session userSession) {
         System.out.println("opening websocket");
-
-        // JSON 객체를 생성
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode requestObject = objectMapper.createObjectNode();
-
-        ObjectNode header = objectMapper.createObjectNode();
-        header.put("approval_key", "bd69f1f9-014f-457d-af41-e5201fc971e3");
-        header.put("custtype", "P");
-        header.put("tr_type", "1");
-        header.put("content-type", "utf-8");
-
-        ObjectNode body = objectMapper.createObjectNode();
-        ObjectNode input = objectMapper.createObjectNode();
-        input.put("tr_id", "2167398");
-        input.put("tr_key", trKey);
-
-        input.set("input", input);
-        requestObject.set("header", header);
-        requestObject.set("body", body);
-
-        String requestMessage = requestObject.toString();
-
+        String requestMessage = "{\n" +
+                "         \"header\":\n" +
+                "         {\n" +
+                "                  \"approval_key\": \"bd69f1f9-014f-457d-af41-e5201fc971e3\",\n" +
+                "                  \"custtype\":\"P\",\n" +
+                "                  \"tr_type\":\"1\",\n" +
+                "                  \"content-type\":\"utf-8\"\n" +
+                "         },\n" +
+                "         \"body\":\n" +
+                "         {\n" +
+                "                  \"input\":\n" +
+                "                  {\n" +
+                "                           \"tr_id\":\"H0STCNT0\",\n" +
+                "                           \"tr_key\":\"005930\"\n" +
+                "                  }\n" +
+                "         }\n" +
+                "}";
         this.userSession = userSession;
         sendMessage(requestMessage);
     }
