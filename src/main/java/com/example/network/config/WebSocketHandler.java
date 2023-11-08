@@ -6,6 +6,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +43,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
         for (WebSocketSession client : CLIENTS) {
             System.out.println("메세지를 전달합니다. > " + message);
             client.sendMessage(message);
+        }
+    }
+
+    // WebSocket 클라이언트로 메시지 전송
+    public void sendWebSocketMessage(String message) throws IOException {
+        for (WebSocketSession client : CLIENTS) {
+            TextMessage textMessage = new TextMessage(message);
+            System.out.println("Sending message to WebSocket client: " + message);
+            client.sendMessage(textMessage);
         }
     }
 }
