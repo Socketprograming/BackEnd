@@ -1,8 +1,7 @@
 package com.example.network.config;
 
 import jakarta.websocket.*;
-import jakarta.websocket.server.PathParam;
-import org.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
