@@ -2,6 +2,8 @@ package com.example.network.controller;
 
 
 import com.example.network.config.WebSocketClientEndpoint;
+import com.example.network.dto.StockDto;
+import com.example.network.response.BaseResponse;
 import com.example.network.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/stock")
@@ -19,7 +22,9 @@ public class StockController {
     private final StockService stockService;
 
     @GetMapping("/search")
-    public void SearchStock(){
+    public CompletableFuture<BaseResponse<StockDto>> SearchStock(){
+        CompletableFuture<BaseResponse<StockDto>> future = new CompletableFuture<>();
+
         try {
             // open websocket
             final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000/tryitout/H0STCNT0"));
@@ -43,6 +48,13 @@ public class StockController {
                         System.out.println("Timestamp: " + timestamp);
                         System.out.println("Last Price: " + lastPrice);
                         // ... print or use other values as needed
+
+                        StockDto stockDtoReal = new StockDto();
+                        stockDtoReal.setStockCode(stockCode);
+//                        stockDtoReal.setRate(rate);
+                        stockDtoReal.setLastPrice(lastPrice);
+                        future.complete(new BaseResponse<>(stockDtoReal));
+
                     } else {
                         System.err.println("Invalid message format: " + message);
                     }
@@ -53,15 +65,17 @@ public class StockController {
             clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
 
             // wait 5 seconds for messages from websocket
-            while(true) {
-                Thread.sleep(5000);
-            }
+//            while(true) {
+            Thread.sleep(5000);
+//            }
 
         } catch (InterruptedException ex) {
             System.err.println("InterruptedException exception: " + ex.getMessage());
         } catch (URISyntaxException ex) {
             System.err.println("URISyntaxException exception: " + ex.getMessage());
         }
+
+        return future;
     }
 
 }
