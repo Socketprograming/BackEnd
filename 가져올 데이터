@@ -7,3 +7,5 @@ STCK_PRPR : 주식 현재가 Number
 opne websocket 과 요청을 분리
 
 baseResponse 로 받는법
+
+코드가 꼬임 clientendpoint 부분과 handler가 공존해버림

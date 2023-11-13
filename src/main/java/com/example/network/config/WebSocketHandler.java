@@ -42,6 +42,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         System.out.println("세션을 닫습니다. : " + session);
     }
 
+    //클라이언트에서 websocket으로 들어오는 메세지를 처리함.
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println("입력된 메세지입니다. > " + message);
@@ -89,9 +90,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
             clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
 
             // wait 5 seconds for messages from websocket
-//            while(true) {
+            while(true) {
             Thread.sleep(5000);
-//            }
+            }
 
         } catch (InterruptedException ex) {
 //            System.err.println("InterruptedException exception: " + ex.getMessage());
@@ -101,21 +102,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
             sendWebSocketMessage("URISyntaxException exception: " + ex.getMessage());
         }
 
-//        // 메시지 파싱
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode rootNode = objectMapper.readTree(message.getPayload());
-//        JsonNode bodyNode = rootNode.path("body");
-//        String trId = bodyNode.path("input").path("tr_id").asText();
-//
-//        // 주식 정보 요청 처리
-//        if ("H0STCNT0".equals(trId)) {
-//            // 예시: 실제 주식 정보를 얻어오는 로직을 구현하고 응답을 생성
-////            String stockInfo = getStockInfo();
-//            sendWebSocketMessage(trId);
-//        }
     }
 
-    // WebSocket 클라이언트로 메시지 전송
+    // WebSocket 클라이언트로 메시지 전송, 클라이언트가 이 메세지를 받아서 처리를 수행함.
     public void sendWebSocketMessage(String message) throws IOException {
         for (WebSocketSession client : CLIENTS) {
             TextMessage textMessage = new TextMessage(message);
