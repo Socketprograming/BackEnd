@@ -1,5 +1,7 @@
 package com.example.network.config;
 
+import com.example.network.dto.StockDto;
+import com.example.network.response.BaseResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,18 +46,73 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println("입력된 메세지입니다. > " + message);
 
-        // 메시지 파싱
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(message.getPayload());
-        JsonNode bodyNode = rootNode.path("body");
-        String trId = bodyNode.path("input").path("tr_id").asText();
+        try {
+            // open websocket
+            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000/tryitout/H0STCNT0"));
 
-        // 주식 정보 요청 처리
-        if ("H0STCNT0".equals(trId)) {
-            // 예시: 실제 주식 정보를 얻어오는 로직을 구현하고 응답을 생성
-//            String stockInfo = getStockInfo();
-            sendWebSocketMessage(session, stockInfo);
+            // add listener
+            clientEndPoint.addMessageHandler(new WebSocketClientEndpoint.MessageHandler() {
+                public void handleMessage(String message) throws IOException {
+
+                    // Split the message using the '^' delimiter
+                    String[] parts = message.split("\\^");
+
+                    // Check if the array has enough elements
+                    if (parts.length >= 3) {
+                        // Access individual parts based on their position
+                        String stockCode = parts[0];
+                        String timestamp = parts[1];
+                        String lastPrice = parts[2];
+
+                        // Print or use the extracted values
+//                        System.out.println("Stock Code: " + stockCode);
+//                        System.out.println("Timestamp: " + timestamp);
+//                        System.out.println("Last Price: " + lastPrice);
+                        // ... print or use other values as needed
+
+                        StockDto stockDtoReal = new StockDto();
+                        stockDtoReal.setStockCode(stockCode);
+//                        stockDtoReal.setRate(rate);
+                        stockDtoReal.setLastPrice(lastPrice);
+
+                        String data = "Stock Code: " + stockCode + "\nLast Price: " + lastPrice;
+                        sendWebSocketMessage(data);
+
+                    } else {
+//                        System.err.println("Invalid message format: " + message);
+                        sendWebSocketMessage(message);
+                    }
+                }
+            });
+
+            // send message to websocket
+            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
+
+            // wait 5 seconds for messages from websocket
+//            while(true) {
+            Thread.sleep(5000);
+//            }
+
+        } catch (InterruptedException ex) {
+//            System.err.println("InterruptedException exception: " + ex.getMessage());
+            sendWebSocketMessage("Invalid message format: " + ex.getMessage());
+        } catch (URISyntaxException ex) {
+//            System.err.println("URISyntaxException exception: " + ex.getMessage());
+            sendWebSocketMessage("URISyntaxException exception: " + ex.getMessage());
         }
+
+//        // 메시지 파싱
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode rootNode = objectMapper.readTree(message.getPayload());
+//        JsonNode bodyNode = rootNode.path("body");
+//        String trId = bodyNode.path("input").path("tr_id").asText();
+//
+//        // 주식 정보 요청 처리
+//        if ("H0STCNT0".equals(trId)) {
+//            // 예시: 실제 주식 정보를 얻어오는 로직을 구현하고 응답을 생성
+////            String stockInfo = getStockInfo();
+//            sendWebSocketMessage(trId);
+//        }
     }
 
     // WebSocket 클라이언트로 메시지 전송

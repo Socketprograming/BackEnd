@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/websocket
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 1111
+    password: 1225
 
   jpa:
     show-sql: true
