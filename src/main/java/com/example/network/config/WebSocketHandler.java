@@ -4,6 +4,7 @@ import com.example.network.dto.StockDto;
 import com.example.network.response.BaseResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.websocket.Session;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -44,12 +45,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     //클라이언트에서 websocket으로 들어오는 메세지를 처리함.
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage message) throws Exception {
         System.out.println("입력된 메세지입니다. > " + message);
+
+        String payload = message.getPayload();
 
         try {
             // open websocket
-            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint(new URI("ws://ops.koreainvestment.com:21000/tryitout/H0STCNT0"));
+            final WebSocketClientEndpoint clientEndPoint = new WebSocketClientEndpoint();
+
+            Session session = clientEndPoint.connect(new URI("ws://ops.koreainvestment.com:21000"));
+            clientEndPoint.sendMessage(payload);
 
             // add listener
             clientEndPoint.addMessageHandler(new WebSocketClientEndpoint.MessageHandler() {
@@ -87,7 +93,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             });
 
             // send message to websocket
-            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
+//            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
 
             // wait 5 seconds for messages from websocket
             while(true) {
