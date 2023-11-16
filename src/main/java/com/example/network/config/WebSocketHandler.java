@@ -63,13 +63,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
                     // Split the message using the '^' delimiter
                     String[] parts = message.split("\\^");
+                    String[] codepart = parts[0].split("\\|");
 
                     // Check if the array has enough elements
-                    if (parts.length >= 3) {
+                    if (parts.length >= 4) {
                         // Access individual parts based on their position
-                        String stockCode = parts[0];
+                        String stockCode = codepart[3];
                         String timestamp = parts[1];
                         String lastPrice = parts[2];
+                        String rate = parts[5];
 
                         // Print or use the extracted values
 //                        System.out.println("Stock Code: " + stockCode);
@@ -82,8 +84,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 //                        stockDtoReal.setRate(rate);
                         stockDtoReal.setLastPrice(lastPrice);
 
-                        String data = "Stock Code: " + stockCode + "\nLast Price: " + lastPrice;
+                        String data = "Stock Code: " + stockCode + "\nLast Price: " + lastPrice + "\nrate: " + rate;
                         sendWebSocketMessage(data);
+//                        sendWebSocketMessage(message);
 
                     } else {
 //                        System.err.println("Invalid message format: " + message);
@@ -96,9 +99,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 //            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
 
             // wait 5 seconds for messages from websocket
-            while(true) {
+//            while(true) {
             Thread.sleep(5000);
-            }
+//            }
 
         } catch (InterruptedException ex) {
 //            System.err.println("InterruptedException exception: " + ex.getMessage());
@@ -114,7 +117,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void sendWebSocketMessage(String message) throws IOException {
         for (WebSocketSession client : CLIENTS) {
             TextMessage textMessage = new TextMessage(message);
-            System.out.println("Sending message to WebSocket client: " + message);
+            System.out.println("Sending message to WebSocket client: \n" + message);
             client.sendMessage(textMessage);
         }
     }
