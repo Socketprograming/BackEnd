@@ -9,6 +9,6 @@ import lombok.*;
 public class StockDto {
     private String stockCode;
     private String lastPrice;
-//    private String rate;
+    private String rate;
 
 }
