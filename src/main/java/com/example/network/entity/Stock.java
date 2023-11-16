@@ -5,7 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class Stock {
 
@@ -17,11 +20,11 @@ public class Stock {
     private String itemName;
 
     //종목코드
-    private int itemCode;
+    private String itemCode;
 
     //현재가
     @Getter
-    private int stockPrice;
+    private String stockPrice;
 
     //등락률
     private double rate;
