@@ -36,7 +36,7 @@ public class WebSocketClientEndpoint {
 
     @OnOpen
     public void onOpen(Session userSession) {
-        System.out.println("opening websocket");
+//        System.out.println("opening websocket");
 //        String requestMessage = "{\n" +
 //                "         \"header\":\n" +
 //                "         {\n" +
