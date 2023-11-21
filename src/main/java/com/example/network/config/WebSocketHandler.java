@@ -72,6 +72,19 @@ public class WebSocketHandler extends TextWebSocketHandler {
                         String timestamp = parts[1];
                         String lastPrice = parts[2];
                         String rate = parts[5];
+                        String name = "0";
+
+                        if("035420".equals(stockCode))
+                            name = "네이버";
+                        else if("005930".equals(stockCode))
+                            name = "삼성전자";
+                        else if("035720".equals(stockCode))
+                            name = "카카오";
+                        else if("051910".equals(stockCode))
+                            name = "LG화학";
+                        else if("000660".equals(stockCode))
+                            name = "SK하이닉스";
+
 
                         // Print or use the extracted values
 //                        System.out.println("Stock Code: " + stockCode);
@@ -84,7 +97,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 //                        stockDtoReal.setRate(rate);
                         stockDtoReal.setLastPrice(lastPrice);
 
-                        String data = "Stock Code: " + stockCode + "\nLast Price: " + lastPrice + "\nrate: " + rate;
+                        String data = "종목명: "+ name + "\n종목 코드: " + stockCode + "\n현재가: " + lastPrice + "\n등락률: " + rate;
                         sendWebSocketMessage(data);
 //                        sendWebSocketMessage(message);
 
