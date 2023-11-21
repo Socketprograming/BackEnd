@@ -16,12 +16,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
         this.webSocketHandler = webSocketHandler;
     }
 
-
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        //엔드포인트 정의, url에 웹소켓 핸들러 매핑
+        //엔드포인트 정의, url에 웹소켓 핸들러 매핑     //websocket연결 시작할 수 있도록 서버에서 핸들러 등록
         registry.addHandler(webSocketHandler, "/board")
-                //클라이언트에서 웹소켓 서버에 요청시 모든 요청을 수용
+                //클라이언트에서 웹소켓 서버에 요청시 http://localhost:8080"에서 들어오는 WebSocket 연결만을 허용
                 .setAllowedOrigins("http://localhost:8080");
 
         //엔드포인트 정의, url에 웹소켓 핸들러 매핑
@@ -29,6 +28,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 //클라이언트에서 웹소켓 서버에 요청시 모든 요청을 수용
                 .setAllowedOrigins("http://ops.koreainvestment.com:21000");
     }
-
-
 }

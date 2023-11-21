@@ -72,45 +72,39 @@ public class WebSocketHandler extends TextWebSocketHandler {
                         String timestamp = parts[1];
                         String lastPrice = parts[2];
                         String rate = parts[5];
+                        String name = "0";
 
-                        // Print or use the extracted values
-//                        System.out.println("Stock Code: " + stockCode);
-//                        System.out.println("Timestamp: " + timestamp);
-//                        System.out.println("Last Price: " + lastPrice);
-                        // ... print or use other values as needed
+                        if("035420".equals(stockCode))
+                            name = "네이버";
+                        else if("005930".equals(stockCode))
+                            name = "삼성전자";
+                        else if("035720".equals(stockCode))
+                            name = "카카오";
+                        else if("051910".equals(stockCode))
+                            name = "LG화학";
+                        else if("000660".equals(stockCode))
+                            name = "SK하이닉스";
 
                         StockDto stockDtoReal = new StockDto();
                         stockDtoReal.setStockCode(stockCode);
-//                        stockDtoReal.setRate(rate);
                         stockDtoReal.setLastPrice(lastPrice);
 
-                        String data = "Stock Code: " + stockCode + "\nLast Price: " + lastPrice + "\nrate: " + rate;
+                        String data = "종목명: "+ name + "\n종목 코드: " + stockCode + "\n현재가: " + lastPrice + "\n등락률: " + rate;
                         sendWebSocketMessage(data);
-//                        sendWebSocketMessage(message);
 
                     } else {
-//                        System.err.println("Invalid message format: " + message);
                         sendWebSocketMessage(message);
                     }
                 }
             });
 
-            // send message to websocket
-//            clientEndPoint.sendMessage("{'event':'addChannel','channel':'ok_btccny_ticker'}");
-
-            // wait 5 seconds for messages from websocket
-//            while(true) {
             Thread.sleep(5000);
-//            }
 
         } catch (InterruptedException ex) {
-//            System.err.println("InterruptedException exception: " + ex.getMessage());
             sendWebSocketMessage("Invalid message format: " + ex.getMessage());
         } catch (URISyntaxException ex) {
-//            System.err.println("URISyntaxException exception: " + ex.getMessage());
             sendWebSocketMessage("URISyntaxException exception: " + ex.getMessage());
         }
-
     }
 
     // WebSocket 클라이언트로 메시지 전송, 클라이언트가 이 메세지를 받아서 처리를 수행함.
